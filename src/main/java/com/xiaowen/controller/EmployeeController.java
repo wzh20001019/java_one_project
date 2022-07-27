@@ -1,4 +1,4 @@
-package com.xiaowen.service.controller;
+package com.xiaowen.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -7,14 +7,11 @@ import com.xiaowen.entity.Employee;
 import com.xiaowen.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Slf4j
@@ -70,21 +67,12 @@ public class EmployeeController {
     @PostMapping("/save")
     public Result<String> save(HttpServletRequest request, @RequestBody Employee employee) {
         String password = employee.getPassword();
-        Long empId = (Long) request.getSession().getAttribute("employee");
-
 
         if(Objects.isNull(password)) {
             employee.setPassword(DigestUtils.md5DigestAsHex("12345".getBytes()));
         } else {
             employee.setPassword(DigestUtils.md5DigestAsHex(password.getBytes()));
         }
-
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
-        employee.setCreateUser(empId);
-        employee.setUpdateUser(empId);
-
-//        log.info(employee.toString());
 
 //        try {
 //            employeeService.save(employee);
@@ -93,8 +81,6 @@ public class EmployeeController {
 //        }
 
         employeeService.save(employee);
-
-
 
         return Result.success("添加成功");
     }
@@ -118,9 +104,9 @@ public class EmployeeController {
 
     @PutMapping("/update")
     public Result<String> update(HttpServletRequest request, @RequestBody Employee employee) {
-        Long empId = (Long) request.getSession().getAttribute("employee");
+        employeeService.updateById(employee);
 
-        return null;
+        return Result.success("员工信息修改成功");
     }
 
 

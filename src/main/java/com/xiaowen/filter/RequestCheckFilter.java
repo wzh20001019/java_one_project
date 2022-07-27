@@ -1,6 +1,7 @@
 package com.xiaowen.filter;
 
 import com.alibaba.fastjson.JSON;
+import com.xiaowen.common.BaseContext;
 import com.xiaowen.common.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.AntPathMatcher;
@@ -36,6 +37,7 @@ public class RequestCheckFilter implements Filter {
         String[] urls = new String[]{
                 "/employee/login",
                 "/employee/logout",
+                "/file/handler/**",
 
                 // 静态资源
                 "/front/**",
@@ -53,6 +55,9 @@ public class RequestCheckFilter implements Filter {
 
         // 4. 判断登陆状态, 已登录, 直接放行
         if(request.getSession().getAttribute("employee") != null) {
+            Long empId = (Long) request.getSession().getAttribute("employee");
+            BaseContext.setCurrentId(empId);
+
             filterChain.doFilter(request, response);
             return;
         }
@@ -73,6 +78,4 @@ public class RequestCheckFilter implements Filter {
 
         return false;
     }
-
-    ;
 }

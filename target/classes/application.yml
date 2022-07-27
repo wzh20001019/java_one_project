@@ -1,6 +1,6 @@
 # 服务器端口
 server:
-  port: 8080
+  port: 8000
 
 spring:
   # 应用名称, 默认就是项目名称
@@ -31,3 +31,6 @@ mybatis-plus:
 logging:
   level:
     root: info
+
+rg:
+  path: "E:\\imgData\\"

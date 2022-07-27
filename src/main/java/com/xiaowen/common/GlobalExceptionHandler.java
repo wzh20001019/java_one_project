@@ -6,9 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 /**
  * 全局异常处理
@@ -33,5 +30,13 @@ public class GlobalExceptionHandler {
         }
 
         return Result.error("失败了");
+    }
+
+    @ExceptionHandler(CustomException.class)
+    public Result<String> exceptionHandler(CustomException e) {
+        log.info(e.getMessage());
+
+
+        return Result.error(e.getMessage());
     }
 }
